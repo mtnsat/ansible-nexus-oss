@@ -1,20 +1,19 @@
-
 ---
-# Add base packages
-
 - name: Update apt
   apt: update_cache=yes cache_valid_time=3600
-  sudo: yes
+  become: yes
   tags: update  
 
-- include: base.yml 
-  sudo: yes
-  tags: base
+- name: Install packages
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - wget
+    - curl
 
 - include: oraclejdk.yml
-  sudo: yes
+  become: yes
   tags: java
 
 - include: nexus.yml
-  sudo: yes
+  become: yes
   tags: nexus
