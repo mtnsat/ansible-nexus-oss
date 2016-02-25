@@ -9,11 +9,11 @@ Use this role to install Sonatype Nexus OSS.
 
 ## Provides
 
-* Latest Sonatype Nexus OSS server
+* Sonatype Nexus OSS server
 
 ## Requirements
 
-* Ansible 1.7 or higher
+* Ansible 2.0 or higher
 * Ubuntu Server 14.04
 
 ## Usage
@@ -35,4 +35,4 @@ nexus:
 
 Mad Creds
 -------
-Forked from [CodingBunch](https://github.com/codingbunch/ansible-nexus-oss)
+Forked from [codingbunch/ansible-nexus-oss](https://github.com/codingbunch/ansible-nexus-oss)

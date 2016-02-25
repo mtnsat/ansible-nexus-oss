@@ -9,8 +9,11 @@
   user: name=nexus comment="Nexus" group=nexus createhome=yes
   tags: nexus
 
-- name: Download Nexus
-  get_url: url=http://download.sonatype.com/nexus/oss/nexus-{{ nexus.version }}-bundle.tar.gz  dest=/tmp
+- name: Download Nexus bundle
+  get_url:
+    url: http://download.sonatype.com/nexus/oss/nexus-{{ nexus.version }}-bundle.tar.gz
+    checksum: "{{ nexus.bundle_checksum }}"
+    dest: /tmp
   tags: nexus
 
 - name: Create Nexus directory
