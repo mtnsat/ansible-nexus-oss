@@ -26,6 +26,7 @@
 
 - name: Update the symbolic link to the Nexus install
   file: "path={{ nexus.home }} src={{ nexus.base_dir }}/nexus-{{ nexus.unpackaged_version }} state=link force=yes owner=nexus group=nexus"
+  notify: restart nexus
   tags: nexus
 
 - name: Set NEXUS_HOME environment variable
@@ -50,6 +51,11 @@
 
 - name: Change Nexus work directory in nexus.properties file
   replace: dest={{ nexus.home }}/conf/nexus.properties regexp='^nexus-work=(.*)$' replace='nexus-work={{ nexus.data_dir }}/sonatype-work/nexus'
+  tags: nexus
+
+- name: Change Nexus listen port in nexus.properties file
+  replace: dest={{ nexus.home }}/conf/nexus.properties regexp='^application-port=(.*)$' replace='application-port={{ nexus.application_port }}'
+  notify: restart nexus
   tags: nexus
 
 - name: Change Nexus home in binary file
