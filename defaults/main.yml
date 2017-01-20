@@ -1,11 +1,10 @@
 ---
 java_major_version: 8
-nexus:
-  application_port: 8081
-  version: 2.12.0
-  ## checksum from curl http://download.sonatype.com/nexus/oss/nexus-{{ nexus.version }}-bundle.tar.gz.sha1
-  bundle_checksum: sha1:1a9aaad8414baffe0a2fd46eed1f41b85f4049e6
-  unpackaged_version: 2.12.0-01
-  base_dir: /opt
-  home: /opt/nexus
-  data_dir: /data
+nexus_application_port: 8081
+nexus_version: 2.12.0
+## checksum from curl http://download.sonatype.com/nexus/oss/nexus-{{ nexus_version }}-bundle.tar.gz.sha1
+nexus_bundle_checksum: sha1:1a9aaad8414baffe0a2fd46eed1f41b85f4049e6
+nexus_unpackaged_version: 2.12.0-01
+nexus_base_dir: /opt
+nexus_home: /opt/nexus
+nexus_data_dir: /data
