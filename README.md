@@ -21,16 +21,17 @@ Use this role to install Sonatype Nexus OSS.
 Clone this repo into your roles directory ( See [ansible documentation](http://docs.ansible.com/playbooks.html#roles) for more information on roles ) and include it in your playbook
 
 ### Default vars
-Override the following if necessary
+Override any of the following if necessary
 
 ```yaml
 ---
-nexus:
-  version: 2.12.0
-  unpackaged_version: 2.12.0-01
-  base_dir: /opt
-  home: /opt/nexus
-  data_dir: /data
+nexus_version: 2.12.0
+## checksum from curl http://download.sonatype.com/nexus/oss/nexus-{{ nexus_version }}-bundle.tar.gz.sha1
+nexus_bundle_checksum: sha1:1a9aaad8414baffe0a2fd46eed1f41b85f4049e6
+nexus_unpackaged_version: 2.12.0-01
+nexus_base_dir: /opt
+nexus_home: /opt/nexus
+nexus_data_dir: /data
 ```
 
 Mad Creds

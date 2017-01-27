@@ -11,67 +11,67 @@
 
 - name: Download Nexus bundle
   get_url:
-    url: http://download.sonatype.com/nexus/oss/nexus-{{ nexus.version }}-bundle.tar.gz
-    checksum: "{{ nexus.bundle_checksum }}"
-    dest: /tmp/nexus-{{ nexus.version }}-bundle.tar.gz
+    url: http://download.sonatype.com/nexus/oss/nexus-{{ nexus_version }}-bundle.tar.gz
+    checksum: "{{ nexus_bundle_checksum }}"
+    dest: /tmp/nexus-{{ nexus_version }}-bundle.tar.gz
   tags: nexus
 
 - name: Create Nexus directory
-  file: path={{ nexus.base_dir }} state=directory
+  file: path={{ nexus_base_dir }} state=directory
   tags: nexus
 
 - name: Unpackage Nexus tarball
-  unarchive: "copy=no src=/tmp/nexus-{{ nexus.version }}-bundle.tar.gz dest={{ nexus.base_dir }} creates={{ nexus.base_dir }}/nexus-{{ nexus.unpackaged_version }}"
+  unarchive: "copy=no src=/tmp/nexus-{{ nexus_version }}-bundle.tar.gz dest={{ nexus_base_dir }} creates={{ nexus_base_dir }}/nexus-{{ nexus_unpackaged_version }}"
   tags: nexus
 
 - name: Update the symbolic link to the Nexus install
-  file: "path={{ nexus.home }} src={{ nexus.base_dir }}/nexus-{{ nexus.unpackaged_version }} state=link force=yes owner=nexus group=nexus"
+  file: "path={{ nexus_home }} src={{ nexus_base_dir }}/nexus-{{ nexus_unpackaged_version }} state=link force=yes owner=nexus group=nexus"
   notify: restart nexus
   tags: nexus
 
 - name: Set NEXUS_HOME environment variable
-  lineinfile: "dest=/etc/environment regexp='^export NEXUS_HOME.*' line='export NEXUS_HOME={{ nexus.home }}' insertbefore='^PATH.*'"
-  tags: nexus 
+  lineinfile: "dest=/etc/environment regexp='^export NEXUS_HOME.*' line='export NEXUS_HOME={{ nexus_home }}' insertbefore='^PATH.*'"
+  tags: nexus
 
 - name: Change ownership of nexus folder to the nexus user and nexus group
-  file: path={{ nexus.base_dir }}/nexus-{{ nexus.unpackaged_version }} owner=nexus group=nexus recurse=yes
+  file: path={{ nexus_base_dir }}/nexus-{{ nexus_unpackaged_version }} owner=nexus group=nexus recurse=yes
   tags: nexus
 
 - name: Create data directory
-  file: path={{ nexus.data_dir }} state=directory
+  file: path={{ nexus_data_dir }} state=directory
   tags: nexus
 
 - name: Move work directory to data directory
-  command: mv {{ nexus.base_dir}}/sonatype-work {{ nexus.data_dir }}/sonatype-work creates={{ nexus.data_dir }}/sonatype-work
+  command: mv {{ nexus_base_dir}}/sonatype-work {{ nexus_data_dir }}/sonatype-work creates={{ nexus_data_dir }}/sonatype-work
   tags: nexus
 
 - name: Change ownership of work directory to the nexus user and nexus group
-  file: path={{ nexus.data_dir }}/sonatype-work owner=nexus group=nexus recurse=yes
-  tags: nexus  
+  file: path={{ nexus_data_dir }}/sonatype-work owner=nexus group=nexus recurse=yes
+  tags: nexus
 
 - name: Change Nexus work directory in nexus.properties file
-  replace: dest={{ nexus.home }}/conf/nexus.properties regexp='^nexus-work=(.*)$' replace='nexus-work={{ nexus.data_dir }}/sonatype-work/nexus'
+  replace: dest={{ nexus_home }}/conf/nexus.properties regexp='^nexus-work=(.*)$' replace='nexus-work={{ nexus_data_dir }}/sonatype-work/nexus'
   tags: nexus
 
 - name: Change Nexus listen port in nexus.properties file
-  replace: dest={{ nexus.home }}/conf/nexus.properties regexp='^application-port=(.*)$' replace='application-port={{ nexus.application_port }}'
+  replace: dest={{ nexus_home }}/conf/nexus.properties regexp='^application-port=(.*)$' replace='application-port={{ nexus_application_port }}'
   notify: restart nexus
   tags: nexus
 
 - name: Change Nexus home in binary file
-  replace: dest={{ nexus.home }}/bin/nexus regexp='^NEXUS_HOME=(.*)$' replace='NEXUS_HOME={{ nexus.home }}'
+  replace: dest={{ nexus_home }}/bin/nexus regexp='^NEXUS_HOME=(.*)$' replace='NEXUS_HOME={{ nexus_home }}'
   tags: nexus
 
 - name: Change Nexus user in binary file
-  replace: dest={{ nexus.home }}/bin/nexus regexp='^#RUN_AS_USER=(.*)$' replace='RUN_AS_USER=nexus'
-  tags: nexus 
+  replace: dest={{ nexus_home }}/bin/nexus regexp='^#RUN_AS_USER=(.*)$' replace='RUN_AS_USER=nexus'
+  tags: nexus
 
 - name: Change Nexus piddir in binary file
-  replace: dest={{ nexus.home }}/bin/nexus regexp='^#PIDDIR=(.*)$' replace='PIDDIR=/home/nexus'
+  replace: dest={{ nexus_home }}/bin/nexus regexp='^#PIDDIR=(.*)$' replace='PIDDIR=/home/nexus'
   tags: nexus
 
 - name: Copy Nexus binary to /etc/init.d
-  command: "cp {{ nexus.home }}/bin/nexus /etc/init.d/nexus creates=/etc/init.d/nexus"
+  command: "cp {{ nexus_home }}/bin/nexus /etc/init.d/nexus creates=/etc/init.d/nexus"
   tags: nexus
 
 - name: Make Nexus script executable
@@ -82,5 +82,3 @@
   service: name=nexus enabled=yes state=started
   notify: restart nexus
   tags: nexus
-
-

@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: aalda
-  description: 
+  description:
   company: CodingBunch
   license: MIT
   min_ansible_version: 1.7
@@ -16,4 +16,3 @@ galaxy_info:
   categories:
     - development
   dependencies: []
-  
