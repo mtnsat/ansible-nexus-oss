@@ -13,7 +13,7 @@
   get_url:
     url: http://download.sonatype.com/nexus/oss/nexus-{{ nexus_version }}-bundle.tar.gz
     checksum: "{{ nexus_bundle_checksum }}"
-    dest: /tmp/nexus-{{ nexus_version }}-bundle.tar.gz
+    dest: /var/cache/nexus-{{ nexus_version }}-bundle.tar.gz
   tags: nexus
 
 - name: Create Nexus directory
@@ -21,11 +21,11 @@
   tags: nexus
 
 - name: Unpackage Nexus tarball
-  unarchive: "copy=no src=/tmp/nexus-{{ nexus_version }}-bundle.tar.gz dest={{ nexus_base_dir }} creates={{ nexus_base_dir }}/nexus-{{ nexus_unpackaged_version }}"
+  unarchive: "copy=no src=/tmp/nexus-{{ nexus_version }}-bundle.tar.gz dest={{ nexus_base_dir }} creates={{ nexus_base_dir }}/nexus-{{ nexus_version }}"
   tags: nexus
 
 - name: Update the symbolic link to the Nexus install
-  file: "path={{ nexus_home }} src={{ nexus_base_dir }}/nexus-{{ nexus_unpackaged_version }} state=link force=yes owner=nexus group=nexus"
+  file: "path={{ nexus_home }} src={{ nexus_base_dir }}/nexus-{{ nexus_version }} state=link force=yes owner=nexus group=nexus"
   notify: restart nexus
   tags: nexus
 
@@ -34,7 +34,7 @@
   tags: nexus
 
 - name: Change ownership of nexus folder to the nexus user and nexus group
-  file: path={{ nexus_base_dir }}/nexus-{{ nexus_unpackaged_version }} owner=nexus group=nexus recurse=yes
+  file: path={{ nexus_base_dir }}/nexus-{{ nexus_version }} owner=nexus group=nexus recurse=yes
   tags: nexus
 
 - name: Create data directory
