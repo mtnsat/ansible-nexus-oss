@@ -21,7 +21,7 @@
   tags: nexus
 
 - name: Unpackage Nexus tarball
-  unarchive: "copy=no src=/tmp/nexus-{{ nexus_version }}-bundle.tar.gz dest={{ nexus_base_dir }} creates={{ nexus_base_dir }}/nexus-{{ nexus_version }}"
+  unarchive: "copy=no src=/var/cache/nexus-{{ nexus_version }}-bundle.tar.gz dest={{ nexus_base_dir }} creates={{ nexus_base_dir }}/nexus-{{ nexus_version }}"
   tags: nexus
 
 - name: Update the symbolic link to the Nexus install
